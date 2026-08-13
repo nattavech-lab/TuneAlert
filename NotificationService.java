@@ -20,9 +20,20 @@ public final class NotificationService {
      */
     public NotificationService(List<Notifier> channels, Priority threshold) {
         // TODO(4.1): validate — channels ห้าม null/มีสมาชิก null,
-        //            threshold ห้าม null → throw IllegalArgumentException
+        // threshold ห้าม null → throw IllegalArgumentException
+
+        if (channels==null) throw new IllegalArgumentException();
+        for(Notifier AAA:channels){
+            if (AAA==null) {throw new IllegalArgumentException();
+                
+            }
+        }
+        if (threshold==null) throw new IllegalArgumentException();
+
+
+        
         // TODO(4.2): ✗ เก็บลูกศรตรง ๆ เสี่ยง aliasing → defensive copy!
-        this.channels = channels;
+        this.channels = List.copyOf(channels);
         this.threshold = threshold;
     }
 
@@ -41,6 +52,12 @@ public final class NotificationService {
      */
     public boolean broadcast(String message, Priority priority) {
         // TODO(4.3): validate message (null/ว่าง) และ priority (null)
+
+        if (message==null|| message.isEmpty()) throw new IllegalArgumentException();
+        if (priority==null) throw new IllegalArgumentException();
+        if ( !priority.isAtLeast(threshold)) return  false;
+            
+        
         // TODO(4.4): ถ้า priority ต่ำกว่า threshold ให้ "ไม่ส่ง" และคืน false
         //            คำใบ้: ใช้ Priority.isAtLeast(...) ที่คุณเพิ่งเขียน
         for (Notifier n : channels) {
